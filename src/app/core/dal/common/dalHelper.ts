@@ -1,3 +1,5 @@
+import { apiServerInstance } from '../../../services/apiServiceInstance';
+
 /**
  * [
  *   {
@@ -147,7 +149,7 @@ export function updateByModel(obj) {
     }
   });
   if (updateSql.length === 0) {
-    throw new Error('update error');
+    apiServerInstance.throwApiErrorResponse(100151);
   }
   return {
     sql: updateSql.join(','),

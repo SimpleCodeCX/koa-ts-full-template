@@ -1,5 +1,6 @@
 import * as mysql from 'mysql';
 import dbConnectionString from './mariadb.conf';
+import { apiServerInstance } from '../../../services/apiServiceInstance';
 import { normal } from '../../../lib/logger';
 
 const logger = normal();
@@ -42,8 +43,7 @@ async function callExeScript(sqlType, sql, params) {
   try {
     result = await exeScript(sqlType, sql, params);
   } catch (err) {
-    logger.error(err);
-    throw new Error(err);
+    apiServerInstance.throwApiErrorResponse(100100);
   }
   return result;
 }

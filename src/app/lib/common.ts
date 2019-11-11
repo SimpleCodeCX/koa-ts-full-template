@@ -12,6 +12,21 @@ export function checkParamsIsNullOrError(params: Array<any>): boolean {
   return false;
 }
 
+/**
+ * 检查对象是否错误或者所有value值都为空
+ */
+export function checkObjIsAllNull(obj): boolean {
+  if (!Object.prototype.isPrototypeOf(obj)) { return true; }
+  let flat = true;
+  for (const key in obj) {
+    if (obj[key]) {
+      flat = false;
+      break;
+    }
+  }
+  return flat;
+}
+
 
 export function strToJson(str: string) {
   let jsonData = [];

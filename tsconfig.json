@@ -22,6 +22,12 @@
       ],
       "@dal/*": [
         "./src/app/core/dal/*"
+      ],
+      "@lib": [
+        "./src/app/lib/index"
+      ],
+      "@lib/*": [
+        "./src/app/lib/*"
       ]
     }
   },
