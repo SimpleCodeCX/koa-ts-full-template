@@ -1,8 +1,8 @@
 import devConfig from './dev.config';
 import devServer from './dev-server.config';
 import prodConfig from './prod.config';
-import Debug from 'debug';
-const debug = Debug('dev-server');
+import { normal } from '@lib/logger';
+const logger = normal();
 
 class GlobalConfig {
   config = {
@@ -29,7 +29,7 @@ class GlobalConfig {
 }
 
 const globalConfig = new GlobalConfig();
-debug(globalConfig.config);
+logger.info(globalConfig.config);
 
 const GLOBAL_CONFIG = globalConfig.config;
 export default GLOBAL_CONFIG;

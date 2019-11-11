@@ -5,7 +5,6 @@ import { normal } from '../../../lib/logger';
 
 const logger = normal();
 let pool = null;
-
 function handleError(err) {
   logger.error(err.stack || err);
   connect();
@@ -43,6 +42,7 @@ async function callExeScript(sqlType, sql, params) {
   try {
     result = await exeScript(sqlType, sql, params);
   } catch (err) {
+    logger.error(err);
     apiServerInstance.throwApiErrorResponse(100100);
   }
   return result;
