@@ -1,53 +1,51 @@
+import { dbHelper, sqlHelper, dalHelper } from '../common';
 import { UserDbModel } from '@model/v1';
 
-/**
- * dal 层主要实现对数据库操作，主要是 sql 语句
- */
-
-const USERLIST: Array<UserDbModel> = [
-  {
-    user_name: 'user1',
-    age: 18,
-    hobby: 'Guitar'
-  },
-  {
-    user_name: 'user2',
-    age: 19,
-    hobby: 'Piano'
-  },
-  {
-    user_name: 'user3',
-    age: 20,
-    hobby: 'Piano'
-  },
-  {
-    user_name: 'user4',
-    age: 18,
-    hobby: 'Piano'
-  }
-];
-
-function isNullorUndefined(value: string) {
-  return value === undefined || value === null;
-}
-
 export async function getUserList(dbModel?: UserDbModel,
-  search?: string, page_no?: number, page_size?: number): Promise<Array<UserDbModel>> {
-  // 'select * from user'
-  return USERLIST.filter((item: UserDbModel) => {
-    let flat = true;
-    for (const key in dbModel) {
-      if (!isNullorUndefined(dbModel[key]) && item[key] !== dbModel[key]) {
-        flat = false;
-        break;
-      }
-    }
-    return flat;
-  });
+  search?: string, pageNo?: number, pageSize?: number): Promise<Array<UserDbModel>> {
+  const sqlWhere = getCommonWhere(dbModel, search);
+  const whereSql = sqlWhere.whereSql;
+  const whereParams = sqlWhere.whereParams;
+
+  const sql = `SELECT * FROM user ${whereSql}`;
+  const sqlWithPaging = sqlHelper.sqlPaging(sql, pageNo, pageSize);
+  const sqlParams = [...whereParams];
+  return dbHelper.query(sqlWithPaging, sqlParams);
 }
 
-export async function getByName(userName): Promise<UserDbModel> {
-  // `select * from user where user_name = 'xxx'`
-  const user = USERLIST.find(item => item.user_name === userName);
-  return user;
+export async function getByName(userName): Promise<Array<UserDbModel>> {
+  const sql = 'SELECT * FROM user where user_name=?';
+  const sqlParams = [userName];
+  return dbHelper.query(sql, sqlParams);
+}
+
+function createSearchWhereSql(search: string, tbName?: string) {
+  tbName = tbName ? `${tbName}.` : '';
+  // 关键词查询 where
+  let searchWhereSql;
+  if (search && search !== '') {
+    searchWhereSql = `(${tbName}user_name like '%${search}%'
+        or ${tbName}hobby like '%${search}%')`;
+  }
+  return searchWhereSql;
+}
+
+function getCommonWhere(dbModel: UserDbModel, search: string) {
+  // 关键词查询 where
+  const searchWhereSql = createSearchWhereSql(search);
+  const searchWhere = {
+    sql: searchWhereSql,
+    params: []
+  };
+  // 根据参数精确查询 where
+  const modelWhere = dalHelper.andByModel(dbModel);
+
+  const sqlWhere = dalHelper.joinAnd([searchWhere, modelWhere]);
+  const whereSql = sqlWhere.sql ? `where ${sqlWhere.sql}` : ' ';
+  const whereParams = sqlWhere.params && Array.isArray(sqlWhere.params) ? sqlWhere.params : [];
+
+  return {
+    whereSql,
+    whereParams
+  };
 }

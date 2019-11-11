@@ -3,7 +3,7 @@
 .vscode-upload.json
 package-lock.json
 **/apidoc/dist/*
-
+**/__bak__/*
 # compiled output
 /dist
 /tmp

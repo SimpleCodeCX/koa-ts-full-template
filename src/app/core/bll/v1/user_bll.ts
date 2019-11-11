@@ -5,14 +5,14 @@ import { UserResModel, UserDbModel } from '@model/v1';
  * bll 层主要对 dal 层进行调用，并且格式化数据，并被 controller 层调用
  */
 
-export async function getUserList(dbModel?: UserDbModel, search?: string, page_no?: number, page_size?: number) {
-  const userList: Array<UserDbModel> = await userDal.getUserList(dbModel, search, page_no, page_size);
+export async function getUserList(dbModel?: UserDbModel, search?: string, pageNo?: number, pageSize?: number) {
+  const userList: Array<UserDbModel> = await userDal.getUserList(dbModel, search, pageNo, pageSize);
   return formatDbList(userList);
 }
 
 export async function getByName(userName) {
-  const user: UserDbModel = await userDal.getByName(userName);
-  return formatDb(user);
+  const users: Array<UserDbModel> = await userDal.getByName(userName);
+  return formatDb(users[0]);
 }
 
 export function formatDb(db: UserDbModel): UserResModel {
