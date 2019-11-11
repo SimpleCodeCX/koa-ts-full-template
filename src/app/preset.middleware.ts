@@ -8,9 +8,13 @@ import koaJson from 'koa-json';
 import koaFavicon from 'koa-favicon';
 import koaStaticServer from 'koa-static-server';
 import {
-  koaCors, koaNotFound
+  koaCors,
+  koaError,
+  koaNotFound,
+  koaApiErrorResponse
 } from './middlewares';
 import { join as pathJoin } from 'path';
+
 export class PresetMiddleware {
   app: Koa;
   constructor(app: Koa) {
@@ -18,6 +22,8 @@ export class PresetMiddleware {
   }
 
   use(): Koa {
+    // 统一处理错误响应信息
+    this.app.use(koaError);
     // 处理跨域
     this.app.use(koaCors);
     // 打印每一次接口请求响应时间
@@ -42,6 +48,7 @@ export class PresetMiddleware {
     this.app.use(views(pathJoin(__dirname, '../assets/views'), {
       extension: 'pug'
     }));
+    this.app.use(koaApiErrorResponse);
     this.app.use(index.routes());
     this.app.use(api.routes());
     /**
