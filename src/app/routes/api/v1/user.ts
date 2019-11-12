@@ -38,7 +38,7 @@ router.get('/users', userController.getUserList);
  * @apiName getUserList
  * @apiGroup users
  *
- * @apiParam (query) {string} user_name 用户名
+ * @apiParam (path) {string} user_name 用户名
  */
 router.get('/users/:user_name', userController.getByName);
 

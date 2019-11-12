@@ -1,5 +1,6 @@
 import { ApiResponseBase } from './ApiResponseBase';
-import { ResponseMsg, PagingResponseMsg, NormalResponseOption } from './typing';
+import { ResponseMsg, PagingResponseMsg } from '@model/v1';
+import { NormalResponseOption } from './typing';
 
 export class ApiNormalResponse implements ApiResponseBase {
   format<T>(option: NormalResponseOption<T>): ResponseMsg<T> | PagingResponseMsg<T> {

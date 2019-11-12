@@ -1,5 +1,6 @@
 import { ApiResponseBase } from './ApiResponseBase';
-import { BatchResponseMsg, BatchResponseOption } from './typing';
+import { BatchResponseMsg } from '@model/v1';
+import { BatchResponseOption } from './typing';
 
 export class ApiBatchResponse implements ApiResponseBase {
   format<T>(option: BatchResponseOption<T>): BatchResponseMsg<T> {

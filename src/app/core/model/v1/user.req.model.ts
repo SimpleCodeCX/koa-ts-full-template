@@ -1,7 +1,7 @@
 /**
  * 接口输入模型
  */
-import { PagingParam } from './request';
+import { PagingParam } from './api-request';
 
 /**
  * {POST} /v1/users 添加用户(json类型的参数)

@@ -1,5 +1,6 @@
 import { ApiResponseBase } from './ApiResponseBase';
-import { ResponseMsg, ErrorResponseOption } from './typing';
+import { ResponseMsg } from '@model/v1';
+import { ErrorResponseOption } from './typing';
 import { getErrorMsg } from '../../lib/error';
 
 export class ApiErrorResponse implements ApiResponseBase {
